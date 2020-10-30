@@ -17,6 +17,8 @@ spectral_line.py --- Python class, when called will generate the transmittance f
 
 generate_spectral_lines.py --- python code that generates transmittance for multiple spectrum lines and produces two csv files for wavenumbers and their associated transmittance Uses pressure and temperature profiles and interpolation functions to find the average pressure and temperature every 5km. Calls the class from spectral_line.py and produces the tranmission of different gasses which are saved to transmittance_spectrum_atm.csv and wavenumber_atm.csv.
 
+Graphing.ipynb --- Ipython notebook that contains pretty plots!
+
 diffusion_model.ipynb --- IPython notebook for a simple calculation of emitted particles by microbes into the atmosphere.
 
 Test.ipynb --- Where the code was initially tested
