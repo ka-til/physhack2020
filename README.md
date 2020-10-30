@@ -13,10 +13,9 @@ temperature_profile_values.csv --- temperature and altitude data points from dig
 Plots are taken from "Data analysis and simulations of VIRTIS Venus spectra" https://amslaurea.unibo.it/8746/1/magurno_davide_tesi.pdf
 
 ## Code
+spectral_line.py --- Python class, when called will generate the transmittance for a single wavenumber. Contains functions which: read excel and text files containing parameter information for a single gas and executes calculations of broadening, profile, shape, intensity and total internal partition sum of the transmittance.
 
-spectral_line.py ---  Python class, when called will generate the transmittance for a single wavenumber
-
-generate_spectral_lines.py --- python code that generates transmittance for multiple spectrum lines and produces two csv files for wavenumbers and their associated transmittance
+generate_spectral_lines.py --- python code that generates transmittance for multiple spectrum lines and produces two csv files for wavenumbers and their associated transmittance Uses pressure and temperature profiles and interpolation functions to find the average pressure and temperature every 5km. Calls the class from spectral_line.py and produces the tranmission of different gasses which are saved to transmittance_spectrum_atm.csv and wavenumber_atm.csv.
 
 diffusion_model.ipynb --- IPython notebook for a simple calculation of emitted particles by microbes into the atmosphere.
 
