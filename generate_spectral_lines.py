@@ -3,7 +3,7 @@ import matplotlib.pylab as plt
 import scipy.constants as spc
 import pandas as pd
 from scipy import interpolate
-import spectral_line
+import spectrum_line
 
 '''
 Defining Pressure and temperatures
@@ -44,14 +44,12 @@ for val in altitude_range:
 '''
 Calling the class here
 '''
-a = spectral_line.spectral_line()
+a = spectrum_line.spectrum_line()
 
 '''
 Creating a list of HITRAN files
 '''
-HITRAN_files = ['CO.txt', 'N2.txt', 'SO2.txt', 'CO2.txt', 'H2O.txt']
-tau_aggregate = ([])
-wavenumbers = ([])
+HITRAN_files = ['CO', 'N2', 'SO2', 'CO2', 'H2O', 'O2']
 
 
 '''
@@ -63,18 +61,23 @@ There are four different loops below:
 '''
 
 for file in HITRAN_files:
-    molecule_id, v_center, S_0, delta_air, alphaLorentz_a, alphaDoppler_s, gamma, E_l = a.getParams(file)
+    tau_aggregate = ([])
+    wavenumbers = ([])
+    molecule_id, v_center, S_0, delta_air, alphaLorentz_a, alphaDoppler_s, gamma, E_l = a.getParams(file+'.txt')
     i = 0
     for center in v_center:
-        a.setParams(molecule_id[i], v_center[i], S_0[i], delta_air[i], alphaLorentz_a[i], alphaDoppler_s[i], gamma[i], E_l[i])
-        v = np.linspace(center-0.01, center+0.01, 3)
-        wavenumbers = np.append(wavenumbers, v)
-        for wavenumber in v:
-            tau = 1
-            for j in range(0, len(mean_of_pressure)):
-                a.setLayersParams(mean_of_pressure[j], mean_of_temperature[j])
-                tau = a.transmittance(wavenumber)*tau
-            tau_aggregate = np.append(tau_aggregate, tau)
+        if center > 1000 and center < 6000:
+            a.setParams(molecule_id[i], v_center[i], S_0[i], delta_air[i], alphaLorentz_a[i], alphaDoppler_s[i], gamma[i], E_l[i])
+            v = np.linspace(center-0.01, center+0.01, 3)
+            wavenumbers = np.append(wavenumbers, v)
+            for wavenumber in v:
+                tau = 1
+                for j in range(0, len(mean_of_pressure)):
+                    a.setLayersParams(mean_of_pressure[j], mean_of_temperature[j])
+                    tau = a.transmittance(wavenumber)*tau
+                tau_aggregate = np.append(tau_aggregate, tau)
+        print(i)
+        i = i+1
 
-np.savetxt('transmittance_spectrum_atm.csv', tau_aggregate, delimiter=',')
-np.savetxt('wavenumber_atm.csv', wavenumbers, delimiter=',')
+    np.savetxt('transmittance_spectrum_atm_'+file+'.csv', tau_aggregate, delimiter=',')
+    np.savetxt('wavenumber_atm_'+file+'.csv', wavenumbers, delimiter=',')
